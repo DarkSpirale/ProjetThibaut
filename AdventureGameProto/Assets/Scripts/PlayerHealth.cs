@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour
     public float invincibilityDuration = 1f;
     public float blinkRate;
 
+
     void Awake()
     {
         if (instance != null)
@@ -23,6 +24,7 @@ public class PlayerHealth : MonoBehaviour
         instance = this;
     }
 
+
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.H))
@@ -31,6 +33,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+
     public void TakeDamage(int damage)
     {
         if (!isInvincible)
@@ -38,11 +41,12 @@ public class PlayerHealth : MonoBehaviour
             currentHealth -= damage;
             isInvincible = true;
             StartCoroutine(Blink());
-            StartCoroutine(InvincibilityTime(invincibilityDuration));
+            StartCoroutine(InvincibilityTime());
         } 
     }
 
-    public IEnumerator Blink()
+
+    IEnumerator Blink()
     {
         while(isInvincible)
         {
@@ -53,9 +57,10 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public IEnumerator InvincibilityTime(float duration)
+
+    IEnumerator InvincibilityTime()
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(invincibilityDuration);
         isInvincible = false;
     }
 }

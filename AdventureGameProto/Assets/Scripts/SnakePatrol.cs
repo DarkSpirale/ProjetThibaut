@@ -24,6 +24,7 @@ public class SnakePatrol : MonoBehaviour
     {
         targetPosition = transform.position;
     }
+    
 
     void Update()
     {
@@ -54,6 +55,7 @@ public class SnakePatrol : MonoBehaviour
         }
     }
 
+
     void OnCollisionStay2D(Collision2D collision)
     {
         //Dégâts au joueur
@@ -63,6 +65,7 @@ public class SnakePatrol : MonoBehaviour
             playerHealth.TakeDamage(damageOnCollision);
         }
     }
+
 
     public IEnumerator CalculateNewTarget()
     {
@@ -101,12 +104,12 @@ public class SnakePatrol : MonoBehaviour
         }
     }
 
+
     void OnTriggerExit2D()
     {
         //Détecte une sortie de la zone attribuée si utilisée
         if(limitedArea)
         {
-            Debug.Log("Out of area");
             invalidPosition = true;
         }
     }
