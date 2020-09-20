@@ -64,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
 	public void EndRoll()
 	{
 		isRolling = false;
+		PlayerHealth.instance.isInvincible = false;
 	}
 
 	IEnumerator Roll()
@@ -75,6 +76,5 @@ public class PlayerMovement : MonoBehaviour
 		
 		yield return new WaitForSeconds(rollCooldown);
 		isRollAvailable = true;
-		PlayerHealth.instance.isInvincible = false;
 	}
 }

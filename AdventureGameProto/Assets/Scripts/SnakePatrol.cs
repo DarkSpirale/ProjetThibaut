@@ -4,16 +4,21 @@ using System.Collections;
 public class SnakePatrol : MonoBehaviour
 {
     public Animator animator;
+    public BoxCollider2D movementArea;
 
     public int damageOnCollision;
 
     public float movementRadius = 3f;
     public int moveSpeed = 2;
     public float movementDelay = 4f;
+    public bool limitedArea = false;
 
     private Vector3 targetPosition;
-    bool canMove = true;
+    Vector3 lastPosition;
     Vector3 dir;
+    bool canMove = true;
+    bool invalidPosition = false;
+    
 
     void Start()
     {
@@ -46,10 +51,10 @@ public class SnakePatrol : MonoBehaviour
             }
 
             animator.SetBool("IsMoving", canMove);
-            }
+        }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionStay2D(Collision2D collision)
     {
         //Dégâts au joueur
         if(collision.transform.CompareTag("Player"))
@@ -67,24 +72,42 @@ public class SnakePatrol : MonoBehaviour
 
         yield return new WaitForSeconds(movementDelay); //Attente jusqu'à la prochaine possibilité de mouvement
         canMove = true;
-        
-        while(!isTargetOk) //Execute tant que la nouvelle position à atteindre n'est pas valide
+
+        if(!invalidPosition)
         {
-            //Calcul de la nouvelle position à atteindre
-            targetPosition = (Random.insideUnitCircle * movementRadius);
-            dir = targetPosition;
-            targetPosition += transform.position;
-
-            hit = Physics2D.Raycast(transform.position, dir.normalized, Vector2.Distance(transform.position, targetPosition), obstacleLayer);
-
-            if (hit) //Vérifie qu'il n'y a pas d'obstacle sur le chemin
+            while(!isTargetOk) //Execute tant que la nouvelle position à atteindre n'est pas valide
             {
-                Debug.DrawRay(transform.position, dir.normalized * hit.distance, Color.red, 2f);
-            }else
-            {
-                isTargetOk = true; //Nouvelle position à atteindre valide
-                Debug.DrawRay(transform.position, dir.normalized * Vector2.Distance(transform.position, targetPosition), Color.green, 2f);
+                //Calcul de la nouvelle position à atteindre
+                targetPosition = (Random.insideUnitCircle * movementRadius);
+                dir = targetPosition;
+                targetPosition += transform.position;
+
+                hit = Physics2D.Raycast(transform.position, dir.normalized, Vector2.Distance(transform.position, targetPosition), obstacleLayer);
+
+                if (hit) //Vérifie qu'il n'y a pas d'obstacle sur le chemin
+                {
+                    Debug.DrawRay(transform.position, dir.normalized * hit.distance, Color.red, 2f);
+                }else
+                {
+                    isTargetOk = true; //Nouvelle position à atteindre valide
+                    Debug.DrawRay(transform.position, dir.normalized * Vector2.Distance(transform.position, targetPosition), Color.green, 2f);
+                }
             }
-        } 
+            lastPosition = transform.position; 
+        }else
+        {
+            targetPosition = lastPosition;
+            invalidPosition = false;
+        }
+    }
+
+    void OnTriggerExit2D()
+    {
+        //Détecte une sortie de la zone attribuée si utilisée
+        if(limitedArea)
+        {
+            Debug.Log("Out of area");
+            invalidPosition = true;
+        }
     }
 }
