@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
+	public static PlayerMovement instance;
+
 	public float moveSpeed = 15f;
 	public float rollSpeed = 5f;
 	public float rollCooldown = 1f;
@@ -17,11 +19,22 @@ public class PlayerMovement : MonoBehaviour
 	bool isRollAvailable = true;
 	bool isRolling = false;
 
+	void Awake()
+    {
+        if (instance != null)
+        {
+            Debug.LogError("Il y a plus d'une instance de PlayerMovement existante");
+            return;
+        }
+        instance = this;
+    }
+
     void Update()
     {
 		movement.x = Input.GetAxis("Horizontal") * moveSpeed * Time.fixedDeltaTime;
 		movement.y = Input.GetAxis("Vertical") * moveSpeed * Time.fixedDeltaTime;
 
+		//if(Physic.)
 		if (movement != Vector2.zero)
 		{
 			animator.SetFloat("HorizontalSpeed", movement.x);
