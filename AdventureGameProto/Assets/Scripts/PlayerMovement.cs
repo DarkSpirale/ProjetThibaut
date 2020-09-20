@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
 	bool isRollAvailable = true;
 	bool isRolling = false;
 
+
 	void Awake()
     {
         if (instance != null)
@@ -28,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
         }
         instance = this;
     }
+
 
     void Update()
     {
@@ -51,20 +53,25 @@ public class PlayerMovement : MonoBehaviour
 		rollSpeedApplied = isRolling ? rollSpeed : 1f;
     }
 
+
 	void FixedUpdate() 
 	{
 		MovePlayer(movement);
 	}
+
 	
 	void MovePlayer(Vector2 _movement)
 	{	
 		rb.MovePosition(rb.position + _movement * moveSpeed * Time.fixedDeltaTime * rollSpeedApplied);	
 	}
 
+
 	public void EndRoll()
 	{
 		isRolling = false;
+		PlayerHealth.instance.isInvincible = false;
 	}
+
 
 	IEnumerator Roll()
 	{
@@ -75,6 +82,5 @@ public class PlayerMovement : MonoBehaviour
 		
 		yield return new WaitForSeconds(rollCooldown);
 		isRollAvailable = true;
-		PlayerHealth.instance.isInvincible = false;
 	}
 }
