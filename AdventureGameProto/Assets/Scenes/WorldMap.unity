@@ -9689,6 +9689,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1e9164a0f0fec4ca2892a61dd206f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1675632196}
+  myCollider: {fileID: 1675632195}
   damageOnCollision: 10
   movementRadius: 3
   moveSpeed: 2
