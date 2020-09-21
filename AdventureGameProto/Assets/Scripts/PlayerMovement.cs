@@ -36,7 +36,6 @@ public class PlayerMovement : MonoBehaviour
 		movement.x = Input.GetAxis("Horizontal") * moveSpeed * Time.fixedDeltaTime;
 		movement.y = Input.GetAxis("Vertical") * moveSpeed * Time.fixedDeltaTime;
 
-		//if(Physic.)
 		if (movement != Vector2.zero)
 		{
 			animator.SetFloat("HorizontalSpeed", movement.x);
@@ -44,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
 		}	
 		animator.SetFloat("Speed", movement.sqrMagnitude);
 
-		if(Input.GetButton("Dash") && isRollAvailable)
+		if(Input.GetButton("Dash") && isRollAvailable && movement != Vector2.zero)
 		{
 			StartCoroutine(Roll());
 		}
