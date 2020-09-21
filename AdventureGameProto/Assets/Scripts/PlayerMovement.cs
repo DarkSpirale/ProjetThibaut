@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
 
 	Vector2 movement;
 
+	[HideInInspector]
+	public bool isIdle = true;
 	bool isRollAvailable = true;
 	bool isRolling = false;
 
@@ -43,13 +45,15 @@ public class PlayerMovement : MonoBehaviour
 		}	
 		animator.SetFloat("Speed", movement.sqrMagnitude);
 
-		if(Input.GetButton("Dash") && isRollAvailable && movement != Vector2.zero)
+		if(Input.GetButton("Dash") && isRollAvailable && movement.sqrMagnitude > 0.01f)
 		{
 			StartCoroutine(Roll());
 		}
 
 		//Application de l'offset de velocity en cas de roulade
 		rollSpeedApplied = isRolling ? rollSpeed : 1f;
+
+		isIdle = !isRolling;
     }
 
 

@@ -7,8 +7,10 @@ public class PlayerHealth : MonoBehaviour
     public SpriteRenderer spriteRenderer;
 
     public int maxHealth = 100;
+    [HideInInspector]
     public int currentHealth = 100;
 
+    [HideInInspector]
     public bool isInvincible = false;
     public float invincibilityDuration = 1f;
     public float blinkRate;
