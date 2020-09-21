@@ -10154,6 +10154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1675632196}
+  myRigidbody: {fileID: 1675632199}
   myCollider: {fileID: 1675632195}
   movementArea: {fileID: 1541042483}
   damageOnCollision: 10
