@@ -4,23 +4,32 @@ using System.Collections;
 public class SnakePatrol : MonoBehaviour
 {
     public Animator animator;
-
-    public BoxCollider2D myCollider;
+    public BoxCollider2D movementArea;
 
     public int damageOnCollision;
 
     public float movementRadius = 3f;
     public int moveSpeed = 2;
     public float movementDelay = 4f;
+    public bool limitedArea = false;
 
     private Vector3 targetPosition;
-    bool canMove = true;
+    Vector3 lastPosition;
     Vector3 dir;
+    bool canMove = true;
+    bool invalidPosition = false;
+    
 
     void Start()
     {
         targetPosition = transform.position;
+
+        if(!limitedArea)
+        {
+            movementArea.enabled = false;
+        }
     }
+    
 
     void Update()
     {
@@ -30,8 +39,8 @@ public class SnakePatrol : MonoBehaviour
             dir = targetPosition - transform.position;
             dir = dir.normalized;
                     
-            //Si le serpent se rend à sa destination                            Nico : modif 0.3f
-            if(canMove && Vector3.Distance(transform.position, targetPosition) > 0.03f)
+            //Si le serpent se rend à sa destination
+            if(canMove && Vector3.Distance(transform.position, targetPosition) > 0.3f)
             {
                 //Déplacement du serpent
                 transform.Translate(dir * moveSpeed * Time.deltaTime, Space.World);
@@ -40,18 +49,19 @@ public class SnakePatrol : MonoBehaviour
                 animator.SetFloat("VerticalSpeed", dir.y);
             }
 
-            //Si le serpent vient d'arriver à sa destination                    Nico : modif 0.3f
-            if(canMove && Vector3.Distance(transform.position, targetPosition) <= 0.03f)
+            //Si le serpent vient d'arriver à sa destination
+            if(canMove && Vector3.Distance(transform.position, targetPosition) <= 0.3f)
             {
                 canMove = false;
                 StartCoroutine(CalculateNewTarget());
             }
 
             animator.SetBool("IsMoving", canMove);
-            }
+        }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+
+    void OnCollisionStay2D(Collision2D collision)
     {
         //Dégâts au joueur
         if(collision.transform.CompareTag("Player"))
@@ -61,45 +71,35 @@ public class SnakePatrol : MonoBehaviour
         }
     }
 
+
     public IEnumerator CalculateNewTarget()
     {
         bool isTargetOk = false;
         int obstacleLayer = 1 << 8;
         RaycastHit2D hit;
-        int maxTry = 100;
-        
+
         yield return new WaitForSeconds(movementDelay); //Attente jusqu'à la prochaine possibilité de mouvement
         canMove = true;
-        
-        while(!isTargetOk && maxTry > 0) //Execute tant que la nouvelle position à atteindre n'est pas valide
+
+        while(!isTargetOk) //Execute tant que la nouvelle position à atteindre n'est pas valide
         {
             //Calcul de la nouvelle position à atteindre
             targetPosition = (Random.insideUnitCircle * movementRadius);
             dir = targetPosition;
             targetPosition += transform.position;
 
-            //Nico : test Boxcast
-            //hit = Physics2D.Raycast(transform.position, dir.normalized, Vector2.Distance(transform.position, targetPosition), obstacleLayer);
-            hit = Physics2D.BoxCast(transform.position, myCollider.size, 0f, dir.normalized,
-                Vector2.Distance(transform.position, targetPosition), obstacleLayer);
-            
-            if (hit) //Vérifie qu'il n'y a pas d'obstacle sur le chemin
-            {
-                Debug.DrawRay(transform.position, dir.normalized * hit.distance, Color.red, 2f);
-                maxTry--;
-                if (maxTry == 0) Debug.Log("100 try !");
-            }else
+            hit = Physics2D.Raycast(transform.position, dir.normalized, Vector2.Distance(transform.position, targetPosition), obstacleLayer);
+
+            //Vérifie qu'il n'y a pas d'obstacle sur le chemin et que targetPosition est dans la mouvementArea si la restriction de mouvement est activée
+            if(!hit && (movementArea.OverlapPoint(targetPosition) || !limitedArea))
             {
                 isTargetOk = true; //Nouvelle position à atteindre valide
                 Debug.DrawRay(transform.position, dir.normalized * Vector2.Distance(transform.position, targetPosition), Color.green, 2f);
             }
-        } 
-    }
-
-    //Nico : trace cube
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position + dir.normalized * Vector2.Distance(transform.position, targetPosition), myCollider.size);
+            else if (hit) //En cas d'obstacle sur le chemin, dessine un raycast dans la scène
+            {
+                Debug.DrawRay(transform.position, dir.normalized * hit.distance, Color.red, 2f);
+            }
+        }
     }
 }
