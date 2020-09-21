@@ -4,6 +4,7 @@ using System.Collections;
 public class SnakePatrol : MonoBehaviour
 {
     public Animator animator;
+    public BoxCollider2D myCollider;
     public BoxCollider2D movementArea;
 
     public int damageOnCollision;
@@ -88,17 +89,18 @@ public class SnakePatrol : MonoBehaviour
             dir = targetPosition;
             targetPosition += transform.position;
 
-            hit = Physics2D.Raycast(transform.position, dir.normalized, Vector2.Distance(transform.position, targetPosition), obstacleLayer);
+            hit = Physics2D.BoxCast(transform.position, myCollider.size, 0f, dir.normalized,
+                Vector2.Distance(transform.position, targetPosition), obstacleLayer);
 
             //Vérifie qu'il n'y a pas d'obstacle sur le chemin et que targetPosition est dans la mouvementArea si la restriction de mouvement est activée
             if(!hit && (movementArea.OverlapPoint(targetPosition) || !limitedArea))
             {
                 isTargetOk = true; //Nouvelle position à atteindre valide
-                Debug.DrawRay(transform.position, dir.normalized * Vector2.Distance(transform.position, targetPosition), Color.green, 2f);
+                Debug.DrawRay(transform.position, dir.normalized * Vector2.Distance(transform.position, targetPosition), Color.green, movementDelay - 0.5f);
             }
             else if (hit) //En cas d'obstacle sur le chemin, dessine un raycast dans la scène
             {
-                Debug.DrawRay(transform.position, dir.normalized * hit.distance, Color.red, 2f);
+                Debug.DrawRay(transform.position, dir.normalized * hit.distance, Color.red, movementDelay - 0.5f);
             }
         }
     }
