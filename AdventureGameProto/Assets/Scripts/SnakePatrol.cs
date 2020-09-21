@@ -4,7 +4,7 @@ using System.Collections;
 public class SnakePatrol : MonoBehaviour
 {
     public Animator animator;
-    public Rigidbody2D myRigidbody;
+    public Rigidbody2D rb;
     public BoxCollider2D myCollider;
     public BoxCollider2D movementArea;
 
@@ -43,10 +43,7 @@ public class SnakePatrol : MonoBehaviour
                     
             //Si le serpent se rend à sa destination
             if(canMove && Vector3.Distance(transform.position, targetPosition) > 0.3f)
-            {
-                //Déplacement du serpent
-                //transform.Translate(dir * moveSpeed * Time.deltaTime, Space.World);
-                
+            {              
                 animator.SetFloat("HorizontalSpeed", dir.x);
                 animator.SetFloat("VerticalSpeed", dir.y);
             }
@@ -64,8 +61,12 @@ public class SnakePatrol : MonoBehaviour
 
     void FixedUpdate()
     {
-        velocity = dir * moveSpeed;
-        myRigidbody.MovePosition(myRigidbody.position + velocity * Time.deltaTime);
+        if(canMove)
+        {
+            //Déplacement du serpent
+            velocity = dir * moveSpeed;
+            rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
+        }
     }
 
 
