@@ -38,8 +38,7 @@ public class SnakePatrol : MonoBehaviour
         //Autorise le serpent à bouger seulement si le joueur est à proximité
         if(Vector2.Distance(transform.position, PlayerMovement.instance.transform.position) < 20)
         {
-            dir = targetPosition - transform.position;
-            dir = dir.normalized;
+            dir = (targetPosition - transform.position).normalized;
                     
             //Si le serpent se rend à sa destination
             if(canMove && Vector3.Distance(transform.position, targetPosition) > 0.3f)

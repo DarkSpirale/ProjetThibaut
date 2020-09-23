@@ -10,9 +10,11 @@ public class PlayerMovement : MonoBehaviour
 	public float rollCooldown = 1f;
 	float rollSpeedApplied = 1f;
 	
+	[HideInInspector]
 	public Rigidbody2D rb;
+	[HideInInspector]
 	public Animator animator;
-	public SpriteRenderer spriteRenderer;
+	SpriteRenderer spriteRenderer;
 
 	Vector2 movement;
 
@@ -20,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
 	public bool isIdle = true;
 	bool isRollAvailable = true;
 	bool isRolling = false;
-
+	bool isAttacking = false;
 
 	void Awake()
     {
@@ -30,11 +32,17 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
         instance = this;
+
+		rb = transform.GetComponent<Rigidbody2D>();
+		animator = transform.GetComponent<Animator>();
+		spriteRenderer = transform.GetComponent<SpriteRenderer>();
     }
 
 
     void Update()
     {
+		isAttacking = PlayerAttack.instance.isAttacking;
+
 		movement.x = Input.GetAxis("Horizontal") * moveSpeed * Time.fixedDeltaTime;
 		movement.y = Input.GetAxis("Vertical") * moveSpeed * Time.fixedDeltaTime;
 
@@ -45,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
 		}	
 		animator.SetFloat("Speed", movement.sqrMagnitude);
 
-		if(Input.GetButton("Dash") && isRollAvailable && movement.sqrMagnitude > 0.01f)
+		if(Input.GetButton("Roll") && isRollAvailable && movement.sqrMagnitude > 0.01f && isIdle)
 		{
 			StartCoroutine(Roll());
 		}
@@ -53,7 +61,10 @@ public class PlayerMovement : MonoBehaviour
 		//Application de l'offset de velocity en cas de roulade
 		rollSpeedApplied = isRolling ? rollSpeed : 1f;
 
-		isIdle = !isRolling;
+		isIdle = !isRolling && !isAttacking;
+
+		//Debug.Log("Velocity x " + rb.velocity.x);
+		//Debug.Log("Velocity y " + rb.velocity.y);
     }
 
 
@@ -65,7 +76,10 @@ public class PlayerMovement : MonoBehaviour
 	
 	void MovePlayer(Vector2 _movement)
 	{	
-		rb.MovePosition(rb.position + _movement * moveSpeed * Time.fixedDeltaTime * rollSpeedApplied);	
+		//rb.MovePosition(rb.position + _movement * moveSpeed * Time.fixedDeltaTime * rollSpeedApplied);
+
+		if(!isAttacking)
+			rb.velocity = _movement.normalized * moveSpeed * rollSpeedApplied * Time.fixedDeltaTime;	
 	}
 
 

@@ -4,11 +4,12 @@ using System.Collections;
 public class PlayerHealth : MonoBehaviour
 {
     public static PlayerHealth instance;
-    public SpriteRenderer spriteRenderer;
+    SpriteRenderer spriteRenderer;
 
     public int maxHealth = 100;
     [HideInInspector]
-    public int currentHealth = 100;
+    public int currentHealth;
+    public int armor;
 
     [HideInInspector]
     public bool isInvincible = false;
@@ -24,8 +25,15 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
         instance = this;
+
+        spriteRenderer = transform.GetComponent<SpriteRenderer>();
     }
 
+    void Start()
+    {
+        currentHealth = maxHealth;
+        armor = 0;
+    }
 
     void Update()
     {

@@ -1,13 +1,22 @@
 fileFormatVersion: 2
-guid: b32953e2281d4ae45b8aee3306bfb1e5
+guid: 90c66dea481a9bc489d55263adbe233c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6497417375362171783
-    second: HEROS1bit_Dog Attack D_0
+      213: 2901675847153026902
+    second: SlashRight_0
   - first:
-      213: 3554987402961332931
-    second: HEROS1bit_Dog Attack D_1
+      213: 6597251319450074500
+    second: SlashRight_1
+  - first:
+      213: -8788919879518209699
+    second: SlashRight_2
+  - first:
+      213: -375830134036301547
+    second: SlashRight_3
+  - first:
+      213: 8844158046608031954
+    second: SlashRight_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -89,23 +98,95 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HEROS1bit_Dog Attack D_0
+      name: SlashRight_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65703ea2fc2d44820800000000000000
+      internalID: 2901675847153026902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlashRight_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48d7ccd0f152e8b50800000000000000
+      internalID: 6597251319450074500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlashRight_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d59b2fd6feb770680800000000000000
+      internalID: -8788919879518209699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlashRight_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 519f0ecfb78c8caf0800000000000000
+      internalID: -375830134036301547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlashRight_4
       rect:
         serializedVersion: 2
         x: 0
@@ -119,29 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 783c9e79da67b2a50800000000000000
-      internalID: 6497417375362171783
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: HEROS1bit_Dog Attack D_1
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3caaf76353ad55130800000000000000
-      internalID: 3554987402961332931
+      spriteID: 2d00c7192e2ccba70800000000000000
+      internalID: 8844158046608031954
       vertices: []
       indices: 
       edges: []
