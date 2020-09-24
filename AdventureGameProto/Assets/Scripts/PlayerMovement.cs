@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
 	bool pressedRoll = false;
 	bool isAttacking = false;
 
+	Vector2 knockBack = Vector2.zero;
+
 	void Awake()
     {
         if (instance != null)
@@ -78,13 +80,24 @@ public class PlayerMovement : MonoBehaviour
 		isIdle = !isRolling && !isAttacking;
 
 		MovePlayer(movement);
+
+		//Rampe le knockback jusqu'à 0
+		if(knockBack.sqrMagnitude > 0.01f)
+		{
+			knockBack *= 0.75f;
+		}
+		else
+			knockBack = Vector2.zero;
 	}
 
 	
 	void MovePlayer(Vector2 _movement)
 	{	
 		if(!isAttacking)
+		{
 			rb.velocity = _movement.normalized * moveSpeed * rollSpeedApplied * Time.fixedDeltaTime;	
+			rb.velocity += knockBack;
+		}	
 		else
 			rb.velocity = Vector2.zero;
 	}
@@ -107,4 +120,13 @@ public class PlayerMovement : MonoBehaviour
 		yield return new WaitForSeconds(rollCooldown);
 		isRollAvailable = true;
 	}
+
+	
+    public void KnockBack(Vector2 knockBackDir, int knockBackPower)
+    {
+        if(!PlayerHealth.instance.isInvincible)
+        {
+			knockBack = knockBackDir * knockBackPower;
+        }
+    }
 }
