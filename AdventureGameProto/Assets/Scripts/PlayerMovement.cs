@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
 	public bool isIdle = true;
 	bool isRollAvailable = true;
 	bool isRolling = false;
+	bool pressedRoll = false;
 	bool isAttacking = false;
 
 	void Awake()
@@ -38,13 +39,22 @@ public class PlayerMovement : MonoBehaviour
 		spriteRenderer = transform.GetComponent<SpriteRenderer>();
     }
 
+	void Update()
+	{
+		if(Input.GetButtonDown("Roll")) //Register roll input
+			pressedRoll = true;
+	}
 
-    void Update()
-    {
+	void FixedUpdate() 
+	{
 		isAttacking = PlayerAttack.instance.isAttacking;
 
-		movement.x = Input.GetAxis("Horizontal") * moveSpeed * Time.fixedDeltaTime;
-		movement.y = Input.GetAxis("Vertical") * moveSpeed * Time.fixedDeltaTime;
+		if(!isAttacking)
+		{
+			movement.x = Input.GetAxis("Horizontal") * moveSpeed * Time.fixedDeltaTime;
+			movement.y = Input.GetAxis("Vertical") * moveSpeed * Time.fixedDeltaTime;
+		} else
+			movement = Vector2.zero;		
 
 		if (movement != Vector2.zero)
 		{
@@ -53,9 +63,13 @@ public class PlayerMovement : MonoBehaviour
 		}	
 		animator.SetFloat("Speed", movement.sqrMagnitude);
 
-		if(Input.GetButton("Roll") && isRollAvailable && movement.sqrMagnitude > 0.01f && isIdle)
+		if(pressedRoll)
 		{
-			StartCoroutine(Roll());
+			if(isRollAvailable && movement.sqrMagnitude > 0.01f && isIdle)
+			{
+				StartCoroutine(Roll());
+			}
+			pressedRoll = false;
 		}
 
 		//Application de l'offset de velocity en cas de roulade
@@ -63,23 +77,16 @@ public class PlayerMovement : MonoBehaviour
 
 		isIdle = !isRolling && !isAttacking;
 
-		//Debug.Log("Velocity x " + rb.velocity.x);
-		//Debug.Log("Velocity y " + rb.velocity.y);
-    }
-
-
-	void FixedUpdate() 
-	{
 		MovePlayer(movement);
 	}
 
 	
 	void MovePlayer(Vector2 _movement)
 	{	
-		//rb.MovePosition(rb.position + _movement * moveSpeed * Time.fixedDeltaTime * rollSpeedApplied);
-
 		if(!isAttacking)
 			rb.velocity = _movement.normalized * moveSpeed * rollSpeedApplied * Time.fixedDeltaTime;	
+		else
+			rb.velocity = Vector2.zero;
 	}
 
 

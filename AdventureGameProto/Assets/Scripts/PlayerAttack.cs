@@ -7,6 +7,7 @@ public class PlayerAttack : MonoBehaviour
     Animator animator;
 
     public int attackPower = 5;
+    bool pressedAttack = false;
 
     //[HideInInspector]
     public bool isAttacking = false;
@@ -24,16 +25,22 @@ public class PlayerAttack : MonoBehaviour
         animator = PlayerMovement.instance.animator;
     }
 
-
-    void Update()
+    void Update() 
     {
+        if(Input.GetButtonDown("Attack") && PlayerMovement.instance.isIdle)
+        {
+            pressedAttack = true;
+        }
+    }
 
-
-        if(Input.GetButton("Attack") && PlayerMovement.instance.isIdle)
+    void FixedUpdate()
+    {
+        if(pressedAttack)
         {
             Attack();
+            pressedAttack = false;
         }
-    
+            
     }
 
     

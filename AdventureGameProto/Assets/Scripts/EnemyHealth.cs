@@ -48,8 +48,12 @@ public class EnemyHealth : MonoBehaviour
 
     IEnumerator Blink()
     {
-        spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
-        yield return new WaitForSeconds(BLINK_RATE);
-        spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+        for(int i = 0; i < 2; i++)
+        {
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
+            yield return new WaitForSeconds(BLINK_RATE);
+            spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+            yield return new WaitForSeconds(BLINK_RATE);
+        }      
     } 
 }
