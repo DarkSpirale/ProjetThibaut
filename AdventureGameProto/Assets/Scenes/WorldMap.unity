@@ -307,15 +307,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1e9164a0f0fec4ca2892a61dd206f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 208232772}
-  rb: {fileID: 208232773}
-  myCollider: {fileID: 208232774}
+  limitedArea: 1
   movementArea: {fileID: 1417011833}
-  damageOnCollision: 10
   movementRadius: 3
   moveSpeed: 2
   movementDelay: 3
-  limitedArea: 1
+  damageOnCollision: 10
 --- !u!212 &208232777
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -391,7 +388,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 213209817}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0020000935, y: 0.778, z: 0}
+  m_LocalPosition: {x: 0.0020000935, y: 0.578, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1971635647}
@@ -413,6 +410,8 @@ GameObject:
   m_Component:
   - component: {fileID: 245323327}
   - component: {fileID: 245323328}
+  - component: {fileID: 245323330}
+  - component: {fileID: 245323329}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -446,6 +445,58 @@ SortingGroup:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
+--- !u!114 &245323329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245323326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8307a5cd91b6f7343863127f535d3d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &245323330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245323326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a98125502f715b4b83cfb77b434e436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 0}
 --- !u!1 &256141269
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,15 +1157,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1e9164a0f0fec4ca2892a61dd206f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 544765611}
-  rb: {fileID: 544765612}
-  myCollider: {fileID: 544765613}
+  limitedArea: 1
   movementArea: {fileID: 1516504202}
-  damageOnCollision: 10
   movementRadius: 3
   moveSpeed: 2
   movementDelay: 3
-  limitedArea: 1
+  damageOnCollision: 10
 --- !u!212 &544765616
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1295,15 +1343,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1e9164a0f0fec4ca2892a61dd206f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 573848386}
-  rb: {fileID: 573848387}
-  myCollider: {fileID: 573848388}
+  limitedArea: 1
   movementArea: {fileID: 140510794}
-  damageOnCollision: 10
   movementRadius: 3
   moveSpeed: 2
   movementDelay: 3
-  limitedArea: 1
+  damageOnCollision: 10
 --- !u!212 &573848391
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10264,10 +10309,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ef0a8198df3fb47869a9b9c7d4e439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
   knockBackFactor: 10
-  targetIsPlayer: 0
-  targetIsEnemy: 1
+  targetToAttack: 0
+  enemy: {fileID: 0}
 --- !u!61 &835710332
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10872,10 +10916,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ef0a8198df3fb47869a9b9c7d4e439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
   knockBackFactor: 10
-  targetIsPlayer: 0
-  targetIsEnemy: 1
+  targetToAttack: 0
+  enemy: {fileID: 0}
 --- !u!61 &1127939410
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11906,10 +11949,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ef0a8198df3fb47869a9b9c7d4e439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
   knockBackFactor: 10
-  targetIsPlayer: 0
-  targetIsEnemy: 1
+  targetToAttack: 0
+  enemy: {fileID: 0}
 --- !u!61 &1239717392
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12469,15 +12511,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1e9164a0f0fec4ca2892a61dd206f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1675632196}
-  rb: {fileID: 1675632199}
-  myCollider: {fileID: 1675632195}
+  limitedArea: 1
   movementArea: {fileID: 1541042483}
-  damageOnCollision: 10
   movementRadius: 3
   moveSpeed: 2
   movementDelay: 3
-  limitedArea: 1
+  damageOnCollision: 10
 --- !u!61 &1675632195
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13297,10 +13336,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ef0a8198df3fb47869a9b9c7d4e439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
   knockBackFactor: 10
-  targetIsPlayer: 0
-  targetIsEnemy: 1
+  targetToAttack: 0
+  enemy: {fileID: 0}
 --- !u!61 &1846228398
 BoxCollider2D:
   m_ObjectHideFlags: 0

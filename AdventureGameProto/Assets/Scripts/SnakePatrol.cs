@@ -3,17 +3,17 @@ using System.Collections;
 
 public class SnakePatrol : MonoBehaviour
 {
-    public Animator animator;
-    public Rigidbody2D rb;
-    public BoxCollider2D myCollider;
-    public BoxCollider2D movementArea;
+    private Animator animator;
+    private Rigidbody2D rb;
+    private BoxCollider2D myCollider;
 
-    public int damageOnCollision;
-
+    public bool limitedArea = false;
+    public Collider2D movementArea;
     public float movementRadius = 3f;
     public int moveSpeed = 2;
     public float movementDelay = 4f;
-    public bool limitedArea = false;
+
+    public int damageOnCollision;    
 
     private Vector3 targetPosition;
     Vector3 lastPosition;
@@ -21,6 +21,14 @@ public class SnakePatrol : MonoBehaviour
     private Vector2 velocity;
     bool canMove = true;
     
+
+    void Awake()
+    {
+        animator = transform.GetComponent<Animator>();
+        rb = transform.GetComponent<Rigidbody2D>();
+        myCollider = transform.GetComponent<BoxCollider2D>(); 
+    }
+
 
     void Start()
     {

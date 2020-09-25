@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 
+public enum TargetsToAttack {Enemy, Player}
+
 public class AttackDamage : MonoBehaviour
 {
     public int knockBackFactor = 10;
     
-    public enum Targets {Enemy, Player}
-    [Space(10)]
-    [Tooltip("Collider to be affected by the attack")]
-    public Targets target;
+    public TargetsToAttack targetToAttack;
 
-    [Tooltip("To be selected only if target is enemy")]
     public GameObject enemy;
 
     bool targetIsPlayer;
@@ -17,8 +15,8 @@ public class AttackDamage : MonoBehaviour
 
     void Start()
     {
-        targetIsEnemy = target == Targets.Enemy;
-        targetIsPlayer = target == Targets.Player;
+        targetIsEnemy = targetToAttack == TargetsToAttack.Enemy;
+        targetIsPlayer = targetToAttack == TargetsToAttack.Player;
     }
     
 
@@ -32,7 +30,6 @@ public class AttackDamage : MonoBehaviour
 
         if(collider.transform.CompareTag("Player") && targetIsPlayer)
         {
-            Debug.Log("Player got hit");
             EnemyAttack enemyAttack = enemy.GetComponent<EnemyAttack>();
             PlayerHealth.instance.TakeDamage(enemyAttack.attackPower - PlayerHealth.instance.armor);
 

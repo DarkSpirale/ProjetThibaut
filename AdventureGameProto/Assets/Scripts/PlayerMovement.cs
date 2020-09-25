@@ -60,8 +60,16 @@ public class PlayerMovement : MonoBehaviour
 
 		if (movement != Vector2.zero)
 		{
-			animator.SetFloat("HorizontalSpeed", movement.x);
-			animator.SetFloat("VerticalSpeed", movement.y);	
+			if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y))
+            {
+                animator.SetFloat("HorizontalSpeed", movement.x);
+                animator.SetFloat("VerticalSpeed", 0);    
+            }
+            else
+            {
+                animator.SetFloat("HorizontalSpeed", 0);
+                animator.SetFloat("VerticalSpeed", movement.y);    
+            }  
 		}	
 		animator.SetFloat("Speed", movement.sqrMagnitude);
 
