@@ -21,8 +21,11 @@ public class PlayerMovement : MonoBehaviour
 	[HideInInspector]
 	public bool isIdle = true;
 	bool isRollAvailable = true;
-	bool isRolling = false;
+	[HideInInspector]
+	public bool isRolling = false;
 	bool pressedRoll = false;
+	[HideInInspector]
+	public bool canCancelRoll = false;
 	bool isAttacking = false;
 
 	Vector2 knockBack = Vector2.zero;
@@ -73,11 +76,17 @@ public class PlayerMovement : MonoBehaviour
 		}	
 		animator.SetFloat("Speed", movement.sqrMagnitude);
 
+		//Lancement de la roulade
 		if(pressedRoll)
 		{
-			if(isRollAvailable && movement.sqrMagnitude > 0.01f && isIdle)
+			bool canRoll = isRollAvailable && (isIdle || (isAttacking && PlayerAttack.instance.canCancelAttack));
+			if(canRoll)
 			{
-				StartCoroutine(Roll());
+				//End attacking method if the attack was cancelled
+				if(isAttacking)
+					PlayerAttack.instance.EndAttack();
+
+				Roll();
 			}
 			pressedRoll = false;
 		}
@@ -111,25 +120,35 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 
-	public void EndRoll()
-	{
-		isRolling = false;
-		PlayerHealth.instance.isInvincible = false;
-	}
-
-
-	IEnumerator Roll()
+	void Roll()
 	{
 		isRollAvailable = false;
 		isRolling = true;
 		PlayerHealth.instance.isInvincible = true;
 		animator.SetTrigger("isRolling");
-		
+	}
+
+	public void EndRoll()
+	{
+		isRolling = false;
+		PlayerHealth.instance.isInvincible = false;
+		canCancelRoll = false;
+
+		StartCoroutine(RollCooldown());
+	}	
+
+	public void CanCancelRoll()
+	{
+		canCancelRoll = true;
+	}
+
+	IEnumerator RollCooldown()
+	{
 		yield return new WaitForSeconds(rollCooldown);
 		isRollAvailable = true;
 	}
 
-	
+
     public void KnockBack(Vector2 knockBackDir, int knockBackPower)
     {
         if(!PlayerHealth.instance.isInvincible)

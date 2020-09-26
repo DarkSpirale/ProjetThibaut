@@ -20,7 +20,8 @@ public class SnakePatrol : MonoBehaviour
     Vector3 dir;
     private Vector2 velocity;
     bool canMove = true;
-    
+
+    Vector2 knockBack = Vector2.zero;    
 
     void Awake()
     {
@@ -44,7 +45,7 @@ public class SnakePatrol : MonoBehaviour
     void Update()
     {
         //Autorise le serpent à bouger seulement si le joueur est à proximité
-        if(Vector2.Distance(transform.position, PlayerMovement.instance.transform.position) < 20)
+        if(Vector2.Distance(transform.position, PlayerMovement.instance.transform.position) < 20f)
         {
             dir = (targetPosition - transform.position).normalized;
                     
@@ -68,12 +69,24 @@ public class SnakePatrol : MonoBehaviour
 
     void FixedUpdate()
     {
+        //Déplacement du serpent
         if(canMove)
         {
             //Déplacement du serpent
-            velocity = dir * moveSpeed;
-            rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
+            rb.velocity = dir * moveSpeed * Time.fixedDeltaTime;
         }
+        else   
+            rb.velocity = Vector2.zero;
+
+        rb.velocity += knockBack;
+
+        //Rampe le knockback jusqu'à 0
+		if(knockBack.sqrMagnitude > 0.01f)
+		{
+			knockBack *= 0.75f;
+		}
+		else
+			knockBack = Vector2.zero;
     }
 
 
@@ -117,6 +130,15 @@ public class SnakePatrol : MonoBehaviour
             {
                 Debug.DrawRay(transform.position, dir.normalized * hit.distance, Color.red, movementDelay - 0.5f);
             }
+        }
+    }
+
+
+    public void KnockBack(Vector2 knockBackDir, int knockBackPower)
+    {
+        if(!PlayerHealth.instance.isInvincible)
+        {
+			knockBack = knockBackDir * knockBackPower;
         }
     }
 }

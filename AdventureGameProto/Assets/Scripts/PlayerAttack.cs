@@ -8,8 +8,10 @@ public class PlayerAttack : MonoBehaviour
 
     public int attackPower = 5;
     bool pressedAttack = false;
+    [HideInInspector]
+    public bool canCancelAttack = false;
 
-    //[HideInInspector]
+    [HideInInspector]
     public bool isAttacking = false;
 
 
@@ -27,17 +29,26 @@ public class PlayerAttack : MonoBehaviour
 
     void Update() 
     {
-        if(Input.GetButtonDown("Attack") && PlayerMovement.instance.isIdle)
+       
+        if(Input.GetButtonDown("Attack"))
         {
             pressedAttack = true;
         }
     }
 
     void FixedUpdate()
-    {
+    {        
         if(pressedAttack)
         {
-            Attack();
+            bool canAttack = PlayerMovement.instance.isIdle || (PlayerMovement.instance.isRolling && PlayerMovement.instance.canCancelRoll);
+            if(canAttack)
+            {
+                //End rolling method if the roll was cancelled
+                if(PlayerMovement.instance.isRolling)
+                    PlayerMovement.instance.EndRoll();
+
+                Attack();
+            }
             pressedAttack = false;
         }
             
@@ -56,5 +67,12 @@ public class PlayerAttack : MonoBehaviour
     public void EndAttack()
     {
         isAttacking = false;
+        canCancelAttack = false;
+    }
+
+
+    public void CanCancelAttack()
+    {
+        canCancelAttack = true;
     }
 }
