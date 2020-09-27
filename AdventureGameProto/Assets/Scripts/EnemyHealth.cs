@@ -6,41 +6,64 @@ public class EnemyHealth : MonoBehaviour
     const float BLINK_RATE = 0.15f;
 
     SpriteRenderer spriteRenderer;
+    Animator animator;
+    Collider2D myCollider;
+    EnemyMovement enemyMovement;
+    EnemyControl enemyControl;
 
-    public int maxHealth = 10;
     [HideInInspector]
     public int currentHealth;
-    public int armor = 0;
+
+    [HideInInspector]
+    public bool isInvincible = false;
+    public float invincibilityDuration = 1f;
 
     void Awake()
     {
         spriteRenderer = transform.GetComponent<SpriteRenderer>();
+        animator = transform.GetComponent<Animator>();
+        myCollider = transform.GetComponent<Collider2D>();
+        enemyMovement = transform.GetComponent<EnemyMovement>();
+        enemyControl = transform.GetComponent<EnemyControl>();
     }
 
 
     void Start()
     {
-        currentHealth = maxHealth;
-    }
-
-
-    void Update()
-    {
-        if(currentHealth <= 0)
-        {
-            Die();
-        }
+        currentHealth = enemyControl.data.health;
     }
 
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        StartCoroutine(Blink());
+        if(!isInvincible)
+        {
+            currentHealth -= damage;
+
+            if(currentHealth <= 0)
+                Die();
+            else
+            {
+                isInvincible = true;
+                StartCoroutine(Blink());
+                StartCoroutine(InvincibilityTime());
+            }                         
+        }
+
     }
 
 
     void Die()
+    {   
+        //Désactivation des components ne devant plus faire effet à la mort
+        myCollider.enabled = false;
+        enemyMovement.enabled = false;
+
+        animator.SetTrigger("isDead"); //Animation de mort
+    }
+
+
+    public void Destroy()
     {
         Destroy(gameObject);
     }
@@ -48,7 +71,7 @@ public class EnemyHealth : MonoBehaviour
 
     IEnumerator Blink()
     {
-        for(int i = 0; i < 2; i++)
+        while(isInvincible)
         {
             spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
             yield return new WaitForSeconds(BLINK_RATE);
@@ -56,4 +79,11 @@ public class EnemyHealth : MonoBehaviour
             yield return new WaitForSeconds(BLINK_RATE);
         }      
     } 
+
+
+    IEnumerator InvincibilityTime()
+    {
+        yield return new WaitForSeconds(invincibilityDuration);
+        isInvincible = false;
+    }
 }

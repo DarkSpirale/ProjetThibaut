@@ -1,19 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SnakePatrol : MonoBehaviour
+public class EnemyMovement : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D rb;
     private BoxCollider2D myCollider;
+    private EnemyControl enemyControl;
+    private EnemyHealth enemyHealth;
 
+    public bool wanderAround = true;
     public bool limitedArea = false;
     public Collider2D movementArea;
     public float movementRadius = 3f;
-    public int moveSpeed = 2;
-    public float movementDelay = 4f;
-
-    public int damageOnCollision;    
+    public float movementDelay = 3f;
 
     private Vector3 targetPosition;
     Vector3 lastPosition;
@@ -28,12 +28,15 @@ public class SnakePatrol : MonoBehaviour
         animator = transform.GetComponent<Animator>();
         rb = transform.GetComponent<Rigidbody2D>();
         myCollider = transform.GetComponent<BoxCollider2D>(); 
+        enemyControl = transform.GetComponent<EnemyControl>();
+        enemyHealth = transform.GetComponent<EnemyHealth>();
     }
 
 
     void Start()
     {
-        targetPosition = transform.position;
+        if(wanderAround)
+            targetPosition = transform.position;
 
         if(!limitedArea)
         {
@@ -43,40 +46,60 @@ public class SnakePatrol : MonoBehaviour
     
 
     void Update()
-    {
-        //Autorise le serpent à bouger seulement si le joueur est à proximité
-        if(Vector2.Distance(transform.position, PlayerMovement.instance.transform.position) < 20f)
+    {   
+        //Si l'ennemi cible le joueur
+        if(enemyControl.data.targetsPlayer)
         {
-            dir = (targetPosition - transform.position).normalized;
-                    
-            //Si le serpent se rend à sa destination
-            if(canMove && Vector3.Distance(transform.position, targetPosition) > 0.3f)
-            {              
-                animator.SetFloat("HorizontalSpeed", dir.x);
-                animator.SetFloat("VerticalSpeed", dir.y);
-            }
-
-            //Si le serpent vient d'arriver à sa destination
-            if(canMove && Vector3.Distance(transform.position, targetPosition) <= 0.3f)
+            if(Vector3.Distance(transform.position, PlayerMovement.instance.transform.position) < enemyControl.data.detectionRadius)
             {
-                canMove = false;
-                StartCoroutine(CalculateNewTarget());
-            }
 
-            animator.SetBool("IsMoving", canMove);
+            }
         }
+        else
+        {
+            if(wanderAround)
+            {
+                //Autorise le serpent à bouger seulement si le joueur est à proximité
+                if(Vector2.Distance(transform.position, PlayerMovement.instance.transform.position) < 20f)
+                {
+                    dir = (targetPosition - transform.position).normalized;
+                            
+                    //Si le serpent se rend à sa destination
+                    if(canMove && Vector3.Distance(transform.position, targetPosition) > 0.3f)
+                    {              
+                        animator.SetFloat("HorizontalSpeed", dir.x);
+                        animator.SetFloat("VerticalSpeed", dir.y);
+                    }
+
+                    //Si le serpent vient d'arriver à sa destination
+                    if(canMove && Vector3.Distance(transform.position, targetPosition) <= 0.3f)
+                    {
+                        canMove = false;
+                        StartCoroutine(CalculateNewTarget());
+                    }
+
+                    animator.SetBool("IsMoving", canMove);
+                }
+            }      
+        }
+        //Si l'ennemi est autorisé à se déplacer aléatoirement
+        
     }
+
 
     void FixedUpdate()
     {
-        //Déplacement du serpent
-        if(canMove)
+        if(wanderAround)
         {
             //Déplacement du serpent
-            rb.velocity = dir * moveSpeed * Time.fixedDeltaTime;
-        }
-        else   
-            rb.velocity = Vector2.zero;
+            if(canMove)
+            {
+                //Déplacement du serpent
+                rb.velocity = dir * enemyControl.data.moveSpeed * Time.fixedDeltaTime;
+            }
+            else   
+                rb.velocity = Vector2.zero;
+        }        
 
         rb.velocity += knockBack;
 
@@ -90,17 +113,6 @@ public class SnakePatrol : MonoBehaviour
     }
 
 
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        //Dégâts au joueur
-        if(collision.transform.CompareTag("Player"))
-        {
-            PlayerHealth playerHealth = collision.transform.GetComponent<PlayerHealth>();
-            playerHealth.TakeDamage(damageOnCollision);
-        }
-    }
-
-
     public IEnumerator CalculateNewTarget()
     {
         bool isTargetOk = false;
@@ -110,7 +122,8 @@ public class SnakePatrol : MonoBehaviour
         yield return new WaitForSeconds(movementDelay); //Attente jusqu'à la prochaine possibilité de mouvement
         canMove = true;
 
-        while(!isTargetOk) //Execute tant que la nouvelle position à atteindre n'est pas valide
+        int maxTry = 20;
+        while(!isTargetOk && maxTry > 0) //Execute tant que la nouvelle position à atteindre n'est pas valide
         {
             //Calcul de la nouvelle position à atteindre
             targetPosition = (Random.insideUnitCircle * movementRadius);
@@ -130,15 +143,16 @@ public class SnakePatrol : MonoBehaviour
             {
                 Debug.DrawRay(transform.position, dir.normalized * hit.distance, Color.red, movementDelay - 0.5f);
             }
+
+            maxTry--;
+            if(maxTry == 0)
+                Debug.LogWarning("Enemy is stuck");
         }
     }
 
 
     public void KnockBack(Vector2 knockBackDir, int knockBackPower)
     {
-        if(!PlayerHealth.instance.isInvincible)
-        {
-			knockBack = knockBackDir * knockBackPower;
-        }
+		knockBack = knockBackDir * knockBackPower;
     }
 }

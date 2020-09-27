@@ -9607,8 +9607,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knockBackFactor: 10
-  targetToAttack: 0
   enemy: {fileID: 0}
+  targetToAttack: 0
 --- !u!61 &835710332
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9909,6 +9909,8 @@ MonoBehaviour:
   rb: {fileID: 887063028}
   animator: {fileID: 0}
   isIdle: 1
+  isRolling: 0
+  canCancelRoll: 0
 --- !u!50 &887063028
 Rigidbody2D:
   serializedVersion: 4
@@ -10006,6 +10008,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackPower: 5
+  canCancelAttack: 0
   isAttacking: 0
 --- !u!1 &941758654
 GameObject:
@@ -10170,8 +10173,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knockBackFactor: 10
-  targetToAttack: 0
   enemy: {fileID: 0}
+  targetToAttack: 0
 --- !u!61 &1127939410
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10390,7 +10393,7 @@ Tilemap:
   - first: {x: 2, y: -4, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 7
+      m_TileIndex: 10
       m_TileSpriteIndex: 16
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
@@ -10399,7 +10402,7 @@ Tilemap:
   - first: {x: 3, y: -4, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 8
+      m_TileIndex: 9
       m_TileSpriteIndex: 15
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
@@ -10799,14 +10802,14 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: e4b307e2d430cd14a8f80945eb1aa438, type: 2}
-  - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 21f855e02592ac7428dff74218d73aae, type: 2}
   - m_RefCount: 0
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 056e48d5da27423478763564cbd1c606, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 8b1a71c1cebf0af49bb9b8b84925ce2a, type: 2}
   - m_RefCount: 5
     m_Data: {fileID: 11400000, guid: ce8cb7397d3d17f489d05c4199bcb3f4, type: 2}
   - m_RefCount: 2
@@ -10857,10 +10860,10 @@ Tilemap:
     m_Data: {fileID: -8147998296807472557, guid: 7822a10861d5d4a4088663406a9dd232,
       type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: -1766431657064585974, guid: 6d3dcd33ae9dec641b81811bc02a9a09,
+    m_Data: {fileID: -5186419972016852196, guid: 7822a10861d5d4a4088663406a9dd232,
       type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: 204190084000969151, guid: 6d3dcd33ae9dec641b81811bc02a9a09, type: 3}
+    m_Data: {fileID: 889408452681677087, guid: 7822a10861d5d4a4088663406a9dd232, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 44
     m_Data:
@@ -10947,13 +10950,21 @@ CompositeCollider2D:
         Y: -20000000
       - X: -81785000
         Y: -20000000
-    - - X: 39970000
-        Y: -30000000
-      - X: 19980000
-        Y: -30000000
-      - X: 19980000
-        Y: -40000000
+    - - X: 36845000
+        Y: -39375000
       - X: 39970000
+        Y: -35625000
+      - X: 39970000
+        Y: -30000000
+      - X: 19980000
+        Y: -30000000
+      - X: 19980000
+        Y: -33750000
+      - X: 23105002
+        Y: -38750000
+      - X: 26855002
+        Y: -40000000
+      - X: 33720000
         Y: -40000000
   m_CompositePaths:
     m_Paths:
@@ -10967,10 +10978,14 @@ CompositeCollider2D:
       - {x: -8.99103, y: 2}
       - {x: -11.988, y: 1.9999708}
       - {x: -11.98797, y: -2}
-    - - {x: 3.996971, y: -4}
+    - - {x: 3.3719974, y: -4}
+      - {x: 3.684506, y: -3.9374928}
+      - {x: 3.997, y: -3.562491}
       - {x: 3.996971, y: -3}
       - {x: 1.998, y: -3.0000293}
-      - {x: 1.9980292, y: -4}
+      - {x: 1.9980041, y: -3.375006}
+      - {x: 2.3105087, y: -3.8750029}
+      - {x: 2.6855044, y: -4}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &1197426552
@@ -10983,9 +10998,9 @@ Rigidbody2D:
   m_GameObject: {fileID: 1197426546}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1000000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -11203,8 +11218,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knockBackFactor: 10
-  targetToAttack: 0
   enemy: {fileID: 0}
+  targetToAttack: 0
 --- !u!61 &1239717392
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11626,8 +11641,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1675632198}
   - component: {fileID: 1675632197}
+  - component: {fileID: 1675632202}
   - component: {fileID: 1675632194}
   - component: {fileID: 1675632200}
+  - component: {fileID: 1675632201}
   - component: {fileID: 1675632195}
   - component: {fileID: 1675632199}
   - component: {fileID: 1675632196}
@@ -11647,15 +11664,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1675632193}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f1e9164a0f0fec4ca2892a61dd206f4, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f93f0b3bc58be543b89f718404a4cdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wanderAround: 1
   limitedArea: 1
   movementArea: {fileID: 1541042483}
   movementRadius: 3
-  moveSpeed: 100
   movementDelay: 3
-  damageOnCollision: 10
 --- !u!61 &1675632195
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11760,7 +11776,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1675632193}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.25, z: 0}
+  m_LocalPosition: {x: -0.42, y: -0.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1836417606}
@@ -11785,7 +11801,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &1675632200
 MonoBehaviour:
@@ -11799,9 +11815,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e82afc256fa884492a48c551539384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
   currentHealth: 0
-  armor: 0
+  isInvincible: 0
+  invincibilityDuration: 1
+--- !u!114 &1675632201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675632193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94fca5f16ac38a4a8f786bb7b9d4fa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1675632202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675632193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adc25207366b1734abf1b029773c7324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 2a0517de8e7929340a5fbf8d8c0f4ee8, type: 2}
 --- !u!1 &1680083620
 GameObject:
   m_ObjectHideFlags: 0
@@ -12011,7 +12052,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1836417605}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.32, y: 1.4, z: 0}
+  m_LocalPosition: {x: -3.42, y: 3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1675632198}
@@ -12042,7 +12083,7 @@ GameObject:
   - component: {fileID: 1842219069}
   - component: {fileID: 1842219068}
   m_Layer: 0
-  m_Name: Tilemap
+  m_Name: Front
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12476,8 +12517,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knockBackFactor: 10
-  targetToAttack: 0
   enemy: {fileID: 0}
+  targetToAttack: 0
 --- !u!61 &1846228398
 BoxCollider2D:
   m_ObjectHideFlags: 0

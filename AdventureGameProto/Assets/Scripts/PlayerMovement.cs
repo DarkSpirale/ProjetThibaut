@@ -65,11 +65,17 @@ public class PlayerMovement : MonoBehaviour
 		{
 			if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y))
             {
+				if(Mathf.Abs(movement.x) < 0.1f)
+					movement.x = movement.x < 0 ? -0.1f : 0.1f;
+
                 animator.SetFloat("HorizontalSpeed", movement.x);
                 animator.SetFloat("VerticalSpeed", 0);    
             }
             else
             {
+				if(Mathf.Abs(movement.y) < 0.1f)
+					movement.y = movement.y < 0 ? -0.1f : 0.1f;
+		
                 animator.SetFloat("HorizontalSpeed", 0);
                 animator.SetFloat("VerticalSpeed", movement.y);    
             }  
@@ -151,9 +157,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void KnockBack(Vector2 knockBackDir, int knockBackPower)
     {
-        if(!PlayerHealth.instance.isInvincible)
-        {
-			knockBack = knockBackDir * knockBackPower;
-        }
+		knockBack = knockBackDir * knockBackPower;
     }
 }
