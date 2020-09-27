@@ -57,6 +57,7 @@ public class EnemyHealth : MonoBehaviour
     {   
         //Désactivation des components ne devant plus faire effet à la mort
         myCollider.enabled = false;
+        enemyMovement.rb.velocity = Vector2.zero;
         enemyMovement.enabled = false;
 
         animator.SetTrigger("isDead"); //Animation de mort

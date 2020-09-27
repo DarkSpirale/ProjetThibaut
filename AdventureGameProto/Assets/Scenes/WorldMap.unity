@@ -11667,6 +11667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f93f0b3bc58be543b89f718404a4cdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
   wanderAround: 1
   limitedArea: 1
   movementArea: {fileID: 1541042483}
@@ -11790,7 +11791,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1675632193}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0

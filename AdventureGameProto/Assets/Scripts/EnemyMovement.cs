@@ -4,7 +4,8 @@ using System.Collections;
 public class EnemyMovement : MonoBehaviour
 {
     private Animator animator;
-    private Rigidbody2D rb;
+    [HideInInspector]
+    public Rigidbody2D rb;
     private BoxCollider2D myCollider;
     private EnemyControl enemyControl;
     private EnemyHealth enemyHealth;
