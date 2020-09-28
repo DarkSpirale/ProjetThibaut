@@ -39,6 +39,9 @@ public class EnemyMovement : MonoBehaviour
         myCollider = transform.GetComponent<BoxCollider2D>(); 
         enemyControl = transform.GetComponent<EnemyControl>();
         enemyHealth = transform.GetComponent<EnemyHealth>();
+
+        if(limitedArea && movementArea == null)
+            Debug.LogError("Missing movement area affectaction");
     }
 
 
@@ -46,10 +49,8 @@ public class EnemyMovement : MonoBehaviour
     {
         targetPosition = transform.position;
 
-        if(!limitedArea)
-        {
-            //movementArea.enabled = false;
-        }
+        if(!limitedArea && movementArea != null)
+            movementArea.enabled = false;
     }
     
 
@@ -63,15 +64,15 @@ public class EnemyMovement : MonoBehaviour
             hit = Physics2D.BoxCast(transform.position, myCollider.size, 0f, (PlayerMovement.instance.transform.position - transform.position).normalized,
                 Vector2.Distance(transform.position, PlayerMovement.instance.transform.position), obstacleLayer);
 
-            //Vérifie qu'il n'y a pas d'obstacle sur le chemin
+            //Vérifie qu'il n'y a pas d'obstacle entre l'ennemi et le joueur
             if(!hit)
             {
                 StopCoroutine("CalculateNewTarget");
                 playerInSight = true;
                 gotOutOfSight = false;
                 isMoving = true;
-                targetPosition = PlayerMovement.instance.transform.position;   
 
+                targetPosition = PlayerMovement.instance.transform.position;   
                 dir = (targetPosition - transform.position).normalized;
 
                 animator.SetFloat("HorizontalSpeed", dir.x);
@@ -136,10 +137,7 @@ public class EnemyMovement : MonoBehaviour
     {
         //Déplacement de l'ennemi
         if(isMoving)
-        {
-            //Déplacement de l'ennemi
             rb.velocity = dir * enemyControl.data.moveSpeed * Time.fixedDeltaTime;
-        }
         else  
             rb.velocity = Vector2.zero;
                 
@@ -174,12 +172,20 @@ public class EnemyMovement : MonoBehaviour
                 Vector2.Distance(transform.position, targetPosition), obstacleLayer);
 
             //Vérifie qu'il n'y a pas d'obstacle sur le chemin et que targetPosition est dans la mouvementArea si la restriction de mouvement est activée
-            if(!hit && (movementArea.OverlapPoint(targetPosition) || !limitedArea))
+            if(!hit)
             {
-                isTargetOk = true; //Nouvelle position à atteindre valide
-                Debug.DrawRay(transform.position, dir.normalized * Vector2.Distance(transform.position, targetPosition), Color.green, movementDelay - 0.5f);
+                if(!limitedArea)
+                {
+                    isTargetOk = true; //Nouvelle position à atteindre valide
+                    Debug.DrawRay(transform.position, dir.normalized * Vector2.Distance(transform.position, targetPosition), Color.green, movementDelay - 0.5f);
+                }
+                else if(movementArea.OverlapPoint(targetPosition))
+                {
+                    isTargetOk = true; //Nouvelle position à atteindre valide
+                    Debug.DrawRay(transform.position, dir.normalized * Vector2.Distance(transform.position, targetPosition), Color.green, movementDelay - 0.5f);
+                }              
             }
-            else if (hit) //En cas d'obstacle sur le chemin, dessine un raycast dans la scène
+            else //En cas d'obstacle sur le chemin, dessine un raycast dans la scène
             {
                 Debug.DrawRay(transform.position, dir.normalized * hit.distance, Color.red, movementDelay - 0.5f);
             }
