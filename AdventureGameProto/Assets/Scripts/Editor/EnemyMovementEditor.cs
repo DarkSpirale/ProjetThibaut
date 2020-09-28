@@ -22,7 +22,7 @@ public class EnemyMovementEditor : Editor
 
             if(enemyMovement.limitedArea)
             {
-                enemyMovement.movementArea = (Collider2D)EditorGUILayout.ObjectField(new GUIContent("Movement Area", "Area which the enemy is limited to"), enemyMovement.movementArea, typeof(Collider2D), false);
+                enemyMovement.movementArea = (Collider2D)EditorGUILayout.ObjectField(new GUIContent("Movement Area", "Area which the enemy is limited to"), enemyMovement.movementArea, typeof(Collider2D), true);
             }
         }
     }

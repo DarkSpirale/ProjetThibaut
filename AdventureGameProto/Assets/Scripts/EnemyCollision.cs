@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class SnakeCollision : MonoBehaviour
+public class EnemyCollision : MonoBehaviour
 {
     EnemyControl enemyControl;
 
