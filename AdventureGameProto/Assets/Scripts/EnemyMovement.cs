@@ -68,11 +68,12 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {   
-        distanceWithPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
-
+        
         //Si l'ennemi est configuré pour cibler le joueur
         if(enemyControl.data.targetsPlayer)
-        {     
+        {    
+            distanceWithPlayer = Vector2.Distance(transform.position, PlayerMovement.instance.transform.position);
+
             //Si le joueur est dans le rayon de détection de l'ennemi       
             if(distanceWithPlayer <= enemyControl.data.detectionRadius)
             {
@@ -149,7 +150,7 @@ public class EnemyMovement : MonoBehaviour
         {
             dir = (targetPosition - transform.position).normalized;
 
-            //Si l'ennemi' se rend à sa destination
+            //Si l'ennemi se rend à sa destination
             if(canMove && Vector2.Distance(transform.position, targetPosition) > 0.3f)
             {     
                 isMoving = true;         
@@ -172,7 +173,7 @@ public class EnemyMovement : MonoBehaviour
     void FixedUpdate()
     {
         //Déplacement de l'ennemi
-        if(isMoving)
+        if(isMoving && !enemyHealth.isHurt)
             rb.velocity = dir * enemyControl.data.moveSpeed * Time.fixedDeltaTime;
         else  
             rb.velocity = Vector2.zero;
@@ -262,7 +263,8 @@ public class EnemyMovement : MonoBehaviour
         {
             recordPosition = false;
 
-            if(pathPositions[pathPositions.Count - 1] != transform.position)
+            //N'enregistre la nouvelle position que si elle est un minimum écartée de la précédente
+            if(Vector2.Distance(pathPositions[pathPositions.Count - 1], transform.position) > 0.1f)
                 pathPositions.Add(transform.position);
 
             StartCoroutine("DelayBetweenPositionRecords");
@@ -277,7 +279,7 @@ public class EnemyMovement : MonoBehaviour
             targetPosition = pathPositions[pathPositions.Count - 1];
 
             //Si la dernière position est atteinte, alors affectation de la précédente si elle existe
-            while(Vector2.Distance(targetPosition, transform.position) < 0.1f && pathPositions.Count > 0)
+            if(Vector2.Distance(targetPosition, transform.position) < 0.1f)
             {
                 pathPositions.RemoveAt(pathPositions.Count - 1);
                 if(pathPositions.Count > 0)

@@ -15,10 +15,10 @@ MonoBehaviour:
   id: 1
   enemyName: Slime
   description: A slimy slime
-  health: 20
+  health: 15
   armor: 0
   attackPower: 0
   damageOnCollision: 10
   moveSpeed: 100
   targetsPlayer: 1
-  detectionRadius: 5
+  detectionRadius: 3

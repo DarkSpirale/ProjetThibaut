@@ -36,14 +36,17 @@ public class AttackDamage : MonoBehaviour
 
             //Inflige les dégâts à l'ennemi
             if(!enemyHealth.isInvincible)
+            {
                 enemyHealth.TakeDamage(PlayerAttack.instance.attackPower - enemyControl.data.armor);
 
-            //Inflige le knockback à l'ennemi
-            if(enemyHealth.currentHealth > 0)
-            {
-                knockBackDir = (enemyMovement.transform.position - PlayerMovement.instance.transform.position).normalized;
-                enemyMovement.KnockBack(knockBackDir, knockBackFactor);
+                //Inflige le knockback à l'ennemi
+                if(enemyHealth.currentHealth > 0)
+                {
+                    knockBackDir = (enemyMovement.transform.position - PlayerMovement.instance.transform.position).normalized;
+                    enemyMovement.KnockBack(knockBackDir, knockBackFactor);
+                }
             }
+                
             
         }
 

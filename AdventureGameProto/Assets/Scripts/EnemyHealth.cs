@@ -17,6 +17,9 @@ public class EnemyHealth : MonoBehaviour
     [HideInInspector]
     public bool isInvincible = false;
     public float invincibilityDuration = 1f;
+    [HideInInspector]
+    public bool isHurt = false;
+    
 
     void Awake()
     {
@@ -47,6 +50,9 @@ public class EnemyHealth : MonoBehaviour
                 isInvincible = true;
                 StartCoroutine(Blink());
                 StartCoroutine(InvincibilityTime());
+
+                isHurt = true;
+                animator.SetTrigger("IsHurt");
             }                         
         }
 
@@ -66,7 +72,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void Destroy()
     {
-        Destroy(gameObject);
+        Destroy(transform.parent.gameObject);
     }
 
 
@@ -87,4 +93,11 @@ public class EnemyHealth : MonoBehaviour
         yield return new WaitForSeconds(invincibilityDuration);
         isInvincible = false;
     }
+
+
+    public void EndHurt()
+    {
+        isHurt = false;
+    }
+
 }
